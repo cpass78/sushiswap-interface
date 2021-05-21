@@ -14,7 +14,7 @@ import { useActiveWeb3React } from 'hooks/useActiveWeb3React'
 import { useBoringHelperContract } from 'hooks/useContract'
 
 // Todo: Rewrite in terms of web3 as opposed to subgraph
-const useFarms = () => {
+const useFarms = (address: string) => {
     const [farms, setFarms] = useState<any | undefined>()
     const { account } = useActiveWeb3React()
     const boringHelperContract = useBoringHelperContract()
@@ -159,8 +159,8 @@ const useFarms = () => {
             return pool.pid
         })
 
-        if (account) {
-            const userFarmDetails = await boringHelperContract?.pollPools(account, pids)
+        if (address) {
+            const userFarmDetails = await boringHelperContract?.pollPools(address, pids)
             //console.log('userFarmDetails:', userFarmDetails)
             const userFarms = userFarmDetails
                 .filter((farm: any) => {
@@ -206,7 +206,7 @@ const useFarms = () => {
         } else {
             setFarms({ farms: sorted, userFarms: [] })
         }
-    }, [account, boringHelperContract])
+    }, [address, boringHelperContract])
 
     useEffect(() => {
         fetchAllFarms()
